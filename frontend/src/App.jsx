@@ -1,14 +1,15 @@
-// import components 
-import DashboardPage from "./pages/DashboardPage"
-import AuthPage from "./pages/AuthPage"
+import { Toaster } from "react-hot-toast";
+
+import AuthProvider from "./contexts/AuthContext.jsx";
+import AppRouter from "./routes/AppRouter";
 
 function App() {
-
   return (
-    <>
-     <h1 className="text-red-500">admin panel</h1>
-    </>
-  )
+    <AuthProvider>
+      <Toaster position="top-right" />
+      <AppRouter />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
