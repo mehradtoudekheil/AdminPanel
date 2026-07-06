@@ -1,4 +1,9 @@
 import { createContext, useEffect, useMemo, useState } from "react";
+import { storage } from "../utils/storage";
+import { authApi } from "../api/authApi";
+import { profileApi } from "../api/profileApi";
+
+
 
 export const AuthContext = createContext();
 
@@ -8,16 +13,61 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // بعداً اینجا بررسی توکن انجام میشه
-    setLoading(false);
+    const initializeAuth = async () => {
+      try {
+        const token = storage.getAccessToken();
+
+        if (!token) return;
+
+        const profile = await profileApi.getProfile();
+
+        setUser(profile);
+        setIsAuthenticated(true);
+      } catch (error) {
+        storage.clearAuth();
+
+        setUser(null);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
+  const authenticate = async (data) => {
+    storage.setAccessToken(data.accessToken);
+    storage.setRefreshToken(data.refreshToken);
+
+    const profile = await profileApi.getProfile();
+
+    setUser(profile);
     setIsAuthenticated(true);
   };
+  
+  // login 
+  const login = async (credentials) => {
+    const data = await authApi.login(credentials);
 
-  const logout = () => {
+    await authenticate(data);
+  };
+
+  // register
+  const register = async (userData) => {
+    const data = await authApi.register(userData);
+
+    await authenticate(data);
+  };
+  // logout
+  const logout = async () => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+    }
+
+    storage.clearAuth();
+
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -28,6 +78,7 @@ function AuthProvider({ children }) {
       isAuthenticated,
       loading,
       login,
+      register,
       logout,
     }),
     [user, isAuthenticated, loading]
