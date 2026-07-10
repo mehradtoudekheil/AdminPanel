@@ -30,7 +30,7 @@ function Register({ setShowLogin }) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!]).{8,}$/;
 
-     // name empty 
+    // name empty 
     if (!registerData.name.trim()) {
       toast.error("نام را وارد کنید.");
       return;
@@ -53,7 +53,7 @@ function Register({ setShowLogin }) {
       return;
     }
 
-     // password empty
+    // password empty
     if (!registerData.password.trim()) {
       toast.error("رمز عبور را وارد کنید.");
       return;
@@ -65,12 +65,12 @@ function Register({ setShowLogin }) {
     }
 
     // confrim password empty check
-     if (!registerData.confirmPassword.trim()) {
+    if (!registerData.confirmPassword.trim()) {
       toast.error("رمز عبور را وارد کنید.");
       return;
     }
     // check confirm pass with pass 
-    if(!registerData.confirmPassword === registerData.password){
+    if (!registerData.confirmPassword === registerData.password) {
       toast.error("رمز عبور ها مشابه نیستند. ")
       return;
     }
@@ -155,6 +155,7 @@ function Register({ setShowLogin }) {
         {/* password input */}
         <Input
           type={"password"}
+          isPassword={true}
           icon={<KeyIcon className='w-5 h-5' />}
           placeholder={"رمز عبور :"}
           value={registerData.password}
@@ -168,6 +169,7 @@ function Register({ setShowLogin }) {
         {/* confirm password input */}
         <Input
           type={"password"}
+          isPassword={true}x
           icon={<KeyIcon className='w-5 h-5' />}
           placeholder={"تائید رمز عبور :"}
           value={registerData.confirmPassword}

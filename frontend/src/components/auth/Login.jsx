@@ -117,6 +117,7 @@ function Login({ setShowLogin }) {
         {/* password input */}
         <Input
           type={"password"}
+          isPassword={true}
           icon={<KeyIcon className='w-5 h-5' />}
           placeholder={"رمز عبور :"}
           value={loginData.password}
