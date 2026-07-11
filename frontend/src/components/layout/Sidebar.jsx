@@ -5,7 +5,7 @@ import { ShoppingBagIcon, UserCircleIcon, Cog8ToothIcon } from "@heroicons/react
 import { useLocation, Link } from 'react-router-dom';
 
 // import components 
-import DashboardItems from "../ui/DashboardItems";
+import SidebarItems from "../ui/SidebarItems";
 
 function Sidebar() {
 
@@ -21,7 +21,7 @@ function Sidebar() {
           فروشگاه من
         </h2>
       </header>
-      <DashboardItems />
+      <SidebarItems />
 
       <div className="mt-3 border-t border-slate-200 dark:border-slate-800">
         <Link to={"/dashboard/profile"}
