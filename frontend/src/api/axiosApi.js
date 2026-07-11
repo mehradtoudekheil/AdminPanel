@@ -6,26 +6,52 @@ const api = axios.create({
   timeout: 10000,
 });
 
-// Request Interceptor
-api.interceptors.request.use(
-  (config) => {
-    const token = storage.getAccessToken();
+api.interceptors.request.use((config) => {
+  const token = storage.getAccessToken();
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+
+  async (error) => {
+    const originalRequest = error.config;
+
+    // اگر Access Token منقضی شده باشد
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/refresh`,
+          {
+            refreshToken: storage.getRefreshToken(),
+          }
+        );
+
+        const newAccessToken = response.data.accessToken;
+
+        storage.setAccessToken(newAccessToken);
+
+        originalRequest.headers.Authorization =
+          `Bearer ${newAccessToken}`;
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        storage.clearAuth();
+
+        return Promise.reject(refreshError);
+      }
     }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response Interceptor
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
     return Promise.reject(error);
   }
 );
