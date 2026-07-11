@@ -29,12 +29,12 @@ function AccountBox() {
                 />
             </span>
             <span className='mr-3'>
-                <p className='text-xs text-mdium '>
+                <p className='text-slate-500 dark:text-slate-300 text-xs text-mdium '>
                     {
                         `${profile.firstName ?? ""} ${profile.lastName ?? ""}`.trim()
                     }
                 </p>
-                <p className='text-[10px] text-light '>
+                <p className='text-slate-500 dark:text-slate-400 text-[10px] text-light '>
                     {myRole}
                 </p>
             </span>
