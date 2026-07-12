@@ -5,9 +5,43 @@ import {
     UsersIcon,
     ShoppingCartIcon
 } from "@heroicons/react/24/outline";
+// import tools
+import { useEffect, useState } from "react";
+import { dashboardApi } from "../../api/dashboardApi";
+import { categoryApi } from "../../api/categoryApi";
+import { toPersianNumber } from "../../utils/number";
 
 
 function DashboardInfoBox() {
+
+    const [dashboard, setDashboard] = useState(null);
+    const [categoriesCount, setCategoriesCount] = useState(null);
+
+    useEffect(() => {
+        const fetchDashboard = async () => {
+            try {
+                const [dashboardData, categoriesData] = await Promise.all([
+                    dashboardApi.getStats(),
+                    categoryApi.getCategories(),
+                ]);
+
+                setDashboard(dashboardData);
+
+                setCategoriesCount(categoriesData.length);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchDashboard();
+    }, []);
+
+    if (!dashboard) return <div>Loading...</div>;
+
+    
+
+
+
     return (
         <div className='w-full h-full grid grid-cols-4 gap-x-5 py-3'>
 
@@ -21,7 +55,7 @@ function DashboardInfoBox() {
                         محصولات
                     </h5>
                     <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
-                        ۲۷۰
+                        {toPersianNumber(dashboard.overview.totalProducts)}
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
                         نسبت به ماه قبل ۱۲٪ افزایش
@@ -39,7 +73,7 @@ function DashboardInfoBox() {
                         کاربران
                     </h5>
                     <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
-                        ۲۷۰
+                        {toPersianNumber(dashboard.overview.totalUsers)}
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
                         نسبت به ماه قبل ۱۲٪ افزایش
@@ -57,7 +91,7 @@ function DashboardInfoBox() {
                         دسته بندی ها
                     </h5>
                     <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
-                        ۲۷۰
+                        {toPersianNumber(categoriesCount)}
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
                         نسبت به ماه قبل ۱۲٪ افزایش
@@ -75,7 +109,7 @@ function DashboardInfoBox() {
                         سفارشات
                     </h5>
                     <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
-                        ۲۷۰
+                        {toPersianNumber(dashboard.overview.totalOrders)}
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
                         نسبت به ماه قبل ۱۲٪ افزایش

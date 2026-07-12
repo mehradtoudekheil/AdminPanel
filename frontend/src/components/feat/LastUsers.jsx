@@ -1,7 +1,31 @@
+// import Icons
 import { UsersIcon } from "@heroicons/react/24/outline";
+// import tools
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import { usersApi } from "../../api/usersApi";
+import { formatCreatedAt } from "../../utils/date";
+
 
 function LastUsers() {
+  const [usersList, setUsersList] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await usersApi.getUsers();
+
+        setUsersList(data.users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
   return (
     <div className='col-span-1 h-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3'>
       <header className="w-full flex justify-between h-12 items-center">
@@ -20,23 +44,36 @@ function LastUsers() {
           مشاهده همه
         </Link>
       </header>
-      <div className="w-full pt-3">
-        {/* item */}
-        <div className="w-full h-14 flex items-center border-b border-slate-200 dark:border-slate-800 justify-between">
-          <div className="flex h-full items-center justify-start">
-            <span className="w-10 h-10 rounded-full bg-blue-500">
 
-            </span>
-            <div className="mr-3">
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-50">مهراد توده خیل</p>
-              <p className="text-xs font-light text-slate-500 dark:text-slate-400 mt-1">mehrad3@test.com
-              </p>
+      <div className="w-full">
+        {usersList.slice(0, 5).map((user) => (
+          <div
+            key={user._id}
+            className="w-full h-14 flex mt-2 px-3 items-center rounded-xl justify-between border border-slate-200 dark:border-slate-800"
+          >
+            <div className="flex items-center">
+              <img
+                src={user.avatar || "/images/Avatar.png"}
+                alt="آواتار کاربر"
+                className="w-10 h-10 rounded-full object-cover"
+              />
+
+              <div className="mr-3">
+                <p className="text-sm font-medium text-slate-800 dark:text-slate-50">
+                  {`${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || user.name}
+                </p>
+
+                <p className="text-xs font-light text-slate-500 dark:text-slate-400 mt-1">
+                  {user.email}
+                </p>
+              </div>
             </div>
+
+            <p className="text-xs font-light text-slate-500 dark:text-slate-400">
+              {formatCreatedAt(user.createdAt)}
+            </p>
           </div>
-          <p className="text-sm font-light text-slate-500 dark:text-slate-400 pl-4">
-            امروز
-          </p>
-        </div>
+        ))}
       </div>
     </div>
   )
