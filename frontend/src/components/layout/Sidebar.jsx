@@ -6,13 +6,15 @@ import { useLocation, Link } from 'react-router-dom';
 
 // import components 
 import SidebarItems from "../ui/SidebarItems";
+import ToggleTheme from "../ui/ToggleTheme";
+
 
 function Sidebar() {
 
   const location = useLocation();
 
   return (
-    <div className='w-full h-full flex flex-col py-4 px-2'>
+    <div className='w-full h-full flex flex-col py-4 px-2 relative'>
       <header className='flex items-center justify-center'>
         <span className='h-8 w-8 rounded-lg bg-indigo-500 text-white flex justify-center items-center'>
           <ShoppingBagIcon className='w-5 h-5' />
@@ -45,6 +47,7 @@ function Sidebar() {
           </h3>
         </Link>
       </div>
+            <ToggleTheme/>
     </div>
   )
 }
