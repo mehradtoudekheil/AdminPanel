@@ -20,7 +20,7 @@ function DashboardInfoBox() {
                     <h5 className="text-slate-800 dark:text-slate-50 font-bold text-md">
                         محصولات
                     </h5>
-                    <p className="text-slate-900 font-bold text-3xl">
+                    <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
                         ۲۷۰
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
@@ -38,7 +38,7 @@ function DashboardInfoBox() {
                     <h5 className="text-slate-800 dark:text-slate-50 font-bold text-md">
                         کاربران
                     </h5>
-                    <p className="text-slate-900 font-bold text-3xl">
+                    <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
                         ۲۷۰
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
@@ -56,7 +56,7 @@ function DashboardInfoBox() {
                     <h5 className="text-slate-800 dark:text-slate-50 font-bold text-md">
                         دسته بندی ها
                     </h5>
-                    <p className="text-slate-900 font-bold text-3xl">
+                    <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
                         ۲۷۰
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">
@@ -74,7 +74,7 @@ function DashboardInfoBox() {
                     <h5 className="text-slate-800 dark:text-slate-50 font-bold text-md">
                         سفارشات
                     </h5>
-                    <p className="text-slate-900 font-bold text-3xl">
+                    <p className="text-slate-900 dark:text-slate-50 font-bold text-3xl">
                         ۲۷۰
                     </p>
                     <p className="text-slate-500 dark:text-slate-500 text-[10px] font-light">

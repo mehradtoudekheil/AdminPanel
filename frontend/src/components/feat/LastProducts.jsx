@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function LastProducts() {
   return (
-    <div className="col-span-2 h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-3">
+    <div className="col-span-2 h-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3">
       {/* Header */}
       <header className="w-full flex justify-between h-12 items-center">
         <div className="flex items-center">
