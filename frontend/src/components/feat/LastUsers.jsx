@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { usersApi } from "../../api/usersApi";
 import { formatCreatedAt } from "../../utils/date";
 
-
 function LastUsers() {
   const [usersList, setUsersList] = useState([]);
 

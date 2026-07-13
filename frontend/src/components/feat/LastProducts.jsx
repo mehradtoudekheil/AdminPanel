@@ -1,7 +1,27 @@
+import { useEffect, useState } from "react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
+import { dashboardApi } from "../../api/dashboardApi";
+import { toPersianNumber } from "../../utils/number";
+
 function LastProducts() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchLatestProducts = async () => {
+      try {
+        const data = await dashboardApi.getStats();
+
+        setProducts(data.products.latest);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchLatestProducts();
+  }, []);
+
   return (
     <div className="col-span-2 h-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3">
       {/* Header */}
@@ -26,7 +46,7 @@ function LastProducts() {
       <table className="w-full mt-3 border-separate border-spacing-0">
         <thead>
           <tr className="bg-slate-100 dark:bg-slate-800">
-            <th className="text-right py-4 px-3 text-xs rounded-r-xl font-medium text-slate-500">
+            <th className="text-right py-4 px-3 rounded-r-xl text-xs font-medium text-slate-500">
               محصول
             </th>
 
@@ -49,40 +69,53 @@ function LastProducts() {
         </thead>
 
         <tbody>
-          <tr className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            {/* Product */}
-            <td className="border-slate-200 dark:border-slate-800 py-4 px-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-indigo-500"></div>
+          {products.slice(0, 4).map((product) => (
+            <tr
+              key={product._id}
+              className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors "
+            >
+              <td className="p-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={
+                      product.images?.length > 0
+                        ? product.images[0]
+                        : "/images/Avatar.png"
+                    }
+                    alt={product.name}
+                    className="w-10 h-10 rounded-lg object-cover bg-slate-100"
+                  />
 
-                <span className="text-sm text-slate-700 dark:text-slate-200">
-                  آیفون 15 پرو مکس
+                  <span className="text-sm text-slate-700 dark:text-slate-200">
+                    {product.name}
+                  </span>
+                </div>
+              </td>
+
+              <td className="py-4 px-3 text-sm text-slate-600 dark:text-slate-300">
+                {product.category?.name}
+              </td>
+
+              <td className="py-4 px-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+                {toPersianNumber(product.price)} تومان
+              </td>
+
+              <td className="py-4 px-3 text-sm text-slate-700 dark:text-slate-200">
+                {toPersianNumber(product.stock)}
+              </td>
+
+              <td className="py-4 px-3">
+                <span
+                  className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${product.isActive
+                    ? "bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400"
+                    : "bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400"
+                    }`}
+                >
+                  {product.isActive ? "فعال" : "غیرفعال"}
                 </span>
-              </div>
-            </td>
-
-            {/* Category */}
-            <td className="border-slate-200 dark:border-slate-800 py-4 px-3 text-sm text-slate-600 dark:text-slate-300">
-              موبایل
-            </td>
-
-            {/* Price */}
-            <td className="border-slate-200 dark:border-slate-800 py-4 px-3 text-sm font-medium text-slate-700 dark:text-slate-200">
-              45,000,000 تومان
-            </td>
-
-            {/* Stock */}
-            <td className="border-slate-200 dark:border-slate-800 py-4 px-3 text-sm text-slate-700 dark:text-slate-200">
-              15
-            </td>
-
-            {/* Status */}
-            <td className="border-slate-200 dark:border-slate-800 py-4 px-3">
-              <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-600 dark:bg-green-500/10 dark:text-green-400">
-                فعال
-              </span>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
